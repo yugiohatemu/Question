@@ -11,19 +11,10 @@
 
 @implementation TestViewController
 
-- (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
-{
-    self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
-    if (self) {
-        // Custom initialization
-    }
-    return self;
-}
-
 - (id)init{
     self = [super init];
     if(self){
-        
+        myCircle = [[CircleView alloc]initWithFrame:CGRectMake(100, 100, 200 , 200)];
     }
     return self;
 }
@@ -32,7 +23,8 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-    self.view.backgroundColor = [UIColor redColor];
+    //elf.view.backgroundColor = [UIColor whiteColor];
+    [self.view addSubview:myCircle];
 	// Do any additional setup after loading the view.
 }
 

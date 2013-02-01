@@ -16,8 +16,9 @@
 		B60AC5D216BB43E50075467A /* Default.png in Resources */ = {isa = PBXBuildFile; fileRef = B60AC5D116BB43E50075467A /* Default.png */; };
 		B60AC5D416BB43E50075467A /* Default@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = B60AC5D316BB43E50075467A /* Default@2x.png */; };
 		B60AC5D616BB43E50075467A /* Default-568h@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = B60AC5D516BB43E50075467A /* Default-568h@2x.png */; };
-		B60AC5E216BB44ED0075467A /* Pie.m in Sources */ = {isa = PBXBuildFile; fileRef = B60AC5E116BB44ED0075467A /* Pie.m */; };
+		B60AC5E216BB44ED0075467A /* CircleView.m in Sources */ = {isa = PBXBuildFile; fileRef = B60AC5E116BB44ED0075467A /* CircleView.m */; };
 		B60AC5E516BB45370075467A /* TestViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = B60AC5E416BB45370075467A /* TestViewController.m */; };
+		B60AC5EC16BB635A0075467A /* CircleObject.m in Sources */ = {isa = PBXBuildFile; fileRef = B60AC5EB16BB635A0075467A /* CircleObject.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -34,10 +35,12 @@
 		B60AC5D116BB43E50075467A /* Default.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Default.png; sourceTree = "<group>"; };
 		B60AC5D316BB43E50075467A /* Default@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Default@2x.png"; sourceTree = "<group>"; };
 		B60AC5D516BB43E50075467A /* Default-568h@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Default-568h@2x.png"; sourceTree = "<group>"; };
-		B60AC5E016BB44ED0075467A /* Pie.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Pie.h; sourceTree = "<group>"; };
-		B60AC5E116BB44ED0075467A /* Pie.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Pie.m; sourceTree = "<group>"; };
+		B60AC5E016BB44ED0075467A /* CircleView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CircleView.h; sourceTree = "<group>"; };
+		B60AC5E116BB44ED0075467A /* CircleView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CircleView.m; sourceTree = "<group>"; };
 		B60AC5E316BB45360075467A /* TestViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TestViewController.h; sourceTree = "<group>"; };
 		B60AC5E416BB45370075467A /* TestViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TestViewController.m; sourceTree = "<group>"; };
+		B60AC5EA16BB635A0075467A /* CircleObject.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CircleObject.h; sourceTree = "<group>"; };
+		B60AC5EB16BB635A0075467A /* CircleObject.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CircleObject.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -88,8 +91,10 @@
 				B60AC5CF16BB43E50075467A /* AppDelegate.m */,
 				B60AC5E316BB45360075467A /* TestViewController.h */,
 				B60AC5E416BB45370075467A /* TestViewController.m */,
-				B60AC5E016BB44ED0075467A /* Pie.h */,
-				B60AC5E116BB44ED0075467A /* Pie.m */,
+				B60AC5E016BB44ED0075467A /* CircleView.h */,
+				B60AC5E116BB44ED0075467A /* CircleView.m */,
+				B60AC5EA16BB635A0075467A /* CircleObject.h */,
+				B60AC5EB16BB635A0075467A /* CircleObject.m */,
 				B60AC5C616BB43E50075467A /* Supporting Files */,
 			);
 			path = FancyScroll;
@@ -176,8 +181,9 @@
 			files = (
 				B60AC5CC16BB43E50075467A /* main.m in Sources */,
 				B60AC5D016BB43E50075467A /* AppDelegate.m in Sources */,
-				B60AC5E216BB44ED0075467A /* Pie.m in Sources */,
+				B60AC5E216BB44ED0075467A /* CircleView.m in Sources */,
 				B60AC5E516BB45370075467A /* TestViewController.m in Sources */,
+				B60AC5EC16BB635A0075467A /* CircleObject.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

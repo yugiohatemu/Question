@@ -7,7 +7,9 @@
 //
 
 #import <UIKit/UIKit.h>
-
-@interface TestViewController : UIViewController
+#import "CircleView.h"
+@interface TestViewController : UIViewController{
+    CircleView * myCircle;
+}
 
 @end
