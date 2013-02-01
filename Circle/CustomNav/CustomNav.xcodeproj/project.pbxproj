@@ -16,6 +16,10 @@
 		B60AC59616BB27D90075467A /* Default.png in Resources */ = {isa = PBXBuildFile; fileRef = B60AC59516BB27D90075467A /* Default.png */; };
 		B60AC59816BB27D90075467A /* Default@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = B60AC59716BB27D90075467A /* Default@2x.png */; };
 		B60AC59A16BB27D90075467A /* Default-568h@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = B60AC59916BB27D90075467A /* Default-568h@2x.png */; };
+		B60AC5A216BB294F0075467A /* MyNavigationController.m in Sources */ = {isa = PBXBuildFile; fileRef = B60AC5A116BB294F0075467A /* MyNavigationController.m */; };
+		B60AC5A916BB2F910075467A /* TestViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = B60AC5A816BB2F910075467A /* TestViewController.m */; };
+		B60AC5AC16BB41B90075467A /* MyToolBar.m in Sources */ = {isa = PBXBuildFile; fileRef = B60AC5AB16BB41B90075467A /* MyToolBar.m */; };
+		B60AC5AF16BB42180075467A /* MyNavigationBar.m in Sources */ = {isa = PBXBuildFile; fileRef = B60AC5AE16BB42170075467A /* MyNavigationBar.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -32,6 +36,14 @@
 		B60AC59516BB27D90075467A /* Default.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Default.png; sourceTree = "<group>"; };
 		B60AC59716BB27D90075467A /* Default@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Default@2x.png"; sourceTree = "<group>"; };
 		B60AC59916BB27D90075467A /* Default-568h@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Default-568h@2x.png"; sourceTree = "<group>"; };
+		B60AC5A016BB294F0075467A /* MyNavigationController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MyNavigationController.h; sourceTree = "<group>"; };
+		B60AC5A116BB294F0075467A /* MyNavigationController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MyNavigationController.m; sourceTree = "<group>"; };
+		B60AC5A716BB2F910075467A /* TestViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TestViewController.h; sourceTree = "<group>"; };
+		B60AC5A816BB2F910075467A /* TestViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TestViewController.m; sourceTree = "<group>"; };
+		B60AC5AA16BB41B90075467A /* MyToolBar.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MyToolBar.h; sourceTree = "<group>"; };
+		B60AC5AB16BB41B90075467A /* MyToolBar.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MyToolBar.m; sourceTree = "<group>"; };
+		B60AC5AD16BB42170075467A /* MyNavigationBar.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MyNavigationBar.h; sourceTree = "<group>"; };
+		B60AC5AE16BB42170075467A /* MyNavigationBar.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MyNavigationBar.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -80,6 +92,14 @@
 			children = (
 				B60AC59216BB27D90075467A /* AppDelegate.h */,
 				B60AC59316BB27D90075467A /* AppDelegate.m */,
+				B60AC5A016BB294F0075467A /* MyNavigationController.h */,
+				B60AC5A116BB294F0075467A /* MyNavigationController.m */,
+				B60AC5AA16BB41B90075467A /* MyToolBar.h */,
+				B60AC5AB16BB41B90075467A /* MyToolBar.m */,
+				B60AC5AD16BB42170075467A /* MyNavigationBar.h */,
+				B60AC5AE16BB42170075467A /* MyNavigationBar.m */,
+				B60AC5A716BB2F910075467A /* TestViewController.h */,
+				B60AC5A816BB2F910075467A /* TestViewController.m */,
 				B60AC58A16BB27D90075467A /* Supporting Files */,
 			);
 			path = CustomNav;
@@ -166,6 +186,10 @@
 			files = (
 				B60AC59016BB27D90075467A /* main.m in Sources */,
 				B60AC59416BB27D90075467A /* AppDelegate.m in Sources */,
+				B60AC5A216BB294F0075467A /* MyNavigationController.m in Sources */,
+				B60AC5A916BB2F910075467A /* TestViewController.m in Sources */,
+				B60AC5AC16BB41B90075467A /* MyToolBar.m in Sources */,
+				B60AC5AF16BB42180075467A /* MyNavigationBar.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

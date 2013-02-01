@@ -7,7 +7,8 @@
 //
 
 #import "AppDelegate.h"
-
+#import "MyNavigationController.h"
+#import "TestViewController.h"
 @implementation AppDelegate
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
@@ -15,7 +16,20 @@
     self.window = [[UIWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
     // Override point for customization after application launch.
     self.window.backgroundColor = [UIColor whiteColor];
+    
+    self.root = [[UIViewController alloc]init];
+    self.root.view.backgroundColor = [UIColor redColor];
+    MyNavigationController * myNav = [[MyNavigationController alloc]initWithRootViewController:self.root];
+    [self.window setRootViewController:self.root];
+    [self.window addSubview:self.root.view];
+    [self.window addSubview:myNav];
     [self.window makeKeyAndVisible];
+    
+    
+    TestViewController * atest = [[TestViewController alloc]initWithMyNav:myNav];
+    atest.view.backgroundColor = [UIColor greenColor];
+    [myNav pushViewController:atest animated:NO];
+    
     return YES;
 }
 
