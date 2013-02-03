@@ -15,17 +15,25 @@
 {
     self = [super initWithFrame:frame];
     if (self) {
-        //Supper 12 for all, but only use 8 slice for now
-        myCircleList = [[NSMutableArray alloc]init];
+        //Set up inner circle
+        CGFloat innerRadius = MIN(CGRectGetWidth(frame), CGRectGetHeight(frame))*0.6;
+        innerCircle = CGRectMake(CGRectGetMidX(frame), CGRectGetMidY(frame)-innerRadius*0.9, innerRadius, innerRadius);
         
-        CGFloat radius = MIN(CGRectGetWidth(frame), CGRectGetHeight(frame))*0.6;
-        centerCircle = CGRectMake(CGRectGetMidX(frame), CGRectGetMidY(frame)-radius*0.9, radius, radius);
-        //NSLog(@"%f",radius);
+        //Set up small circles
+        myCircleList = [[NSMutableArray alloc]init];
         for (int i = 0; i <8; i+=1) {
-            CircleObject * aCircle = [[CircleObject alloc]initWithCenterRect:centerCircle andOrder:i];
+            CircleObject * aCircle = [[CircleObject alloc]initWithCenterRect:innerCircle andOrder:i];
             [myCircleList addObject:aCircle];
         }
-        isScrollBegin = false;
+        
+        //Set up outter circle
+        CircleObject * aCircle = [myCircleList objectAtIndex:0];
+        CGFloat outterRadius = [aCircle getDis] + [aCircle getRadius]; //dis + small r = big r + small r + offset
+        outterCircle = CGRectMake(CGRectGetMidX(innerCircle) - outterRadius, CGRectGetMidY(innerCircle) - outterRadius,
+                                  outterRadius*2, outterRadius*2);
+        
+        //Scroll
+        isScrollBegin = NO;
         currentPoint = CGPointMake(0, 0);
     }
     return self;
@@ -37,22 +45,67 @@
 - (BOOL) isPointOnCircleList:(CGPoint) point{
     //Want the circle to scoll when touch the outer part
     //but do not want it to scroll when touch the inner big circle
-    
-    CircleObject * aCircle = [myCircleList objectAtIndex:0];
-    CGFloat outerRadius = [aCircle getDis] + [aCircle getRadius];
-    CGPoint center = CGPointMake(CGRectGetMidX(centerCircle), CGRectGetMidY(centerCircle));
+
+    CGPoint center = CGPointMake(CGRectGetMidX(innerCircle), CGRectGetMidY(innerCircle));
     CGFloat dis  = sqrtf((point.x - center.x)*(point.x - center.x)+ (point.y - center.y)*(point.y - center.y));
     
-    BOOL onOuter = (dis <= outerRadius); //dis + small radius
-    BOOL onInner = (dis <= CGRectGetWidth(centerCircle)*0.5);
+    BOOL onOuter = (dis <= CGRectGetHeight(outterCircle)*0.5); 
+    BOOL onInner = (dis <= CGRectGetWidth(innerCircle)*0.5);
+    
     return  (onOuter && !onInner);
 }
 
-- (BOOL) isClockWise:(CGPoint) from:(CGPoint) to{
-   //Check which area the points are in
+
+- (int) pointInArea:(CGPoint) point{
+    //1 0
+    //2 3
+    //TODO: replace center circle with outer circle
+    
+    CGFloat radius = CGRectGetHeight(outterCircle)/2.0;
+    
+    CGRect areas[4] = { CGRectMake(CGRectGetMidX(outterCircle), CGRectGetMinY(outterCircle),radius, radius),
+                        CGRectMake(CGRectGetMinX(outterCircle), CGRectGetMinY(outterCircle),radius, radius),
+                        CGRectMake(CGRectGetMinX(outterCircle), CGRectGetMidY(outterCircle),radius, radius),
+                        CGRectMake(CGRectGetMidX(outterCircle), CGRectGetMidY(outterCircle),radius, radius)};
+    
+    for (int i = 0;i<4 ;i+=1 ) {
+        if (CGRectContainsPoint(areas[i], point)) {
+            return i;
+        }
+    }
+    //-1 is invalid?
+    return -1;
+}
+
+
+- (BOOL) isClockWiseFrom:(CGPoint) from to:(CGPoint) to{
+    int fromArea = [self pointInArea:from];
+    int toArea = [self pointInArea:to];
+    BOOL result = YES;
+    if (fromArea == toArea) {
+        
+        if (fromArea == 0) {
+            result = (from.x < to.x) || (from.y > to.y) ;
+        }else if(fromArea == 1){
+            result = (from.x < to.x) || (from.y > to.y) ;
+        }else if(fromArea == 2){
+            result = (from.x > to.x) || (from.y < to.y) ;
+        }else{ //3
+            result = (from.x < to.x) || (from.y < to.y) ;
+        }
+        
+    }else{
+        if (fromArea == 0 && toArea == 3) {
+            result = YES;
+        }else if(fromArea == 3 && toArea == 0){
+            result = NO;
+        }else{
+            result = (fromArea > toArea);
+        }
+    }
     
     
-    return YES;
+    return result;
 }
 
 
@@ -66,32 +119,45 @@
     
     //Check if the point is inside the circle view frame else ignore
     if ([self isPointOnCircleList:point]) {
-        isScrollBegin = true;
+        isScrollBegin = YES;
         currentPoint = point;
-        //NSLog(@"On");
-    }/*else{
-        NSLog(@"Not On");
-    }*/
+        //NSLog(@"Hit");
+    }
+
+    //[self drawRect:self.frame];
 }
 
 - (void) touchesMoved:(NSSet *)touches withEvent:(UIEvent *)event{
+    //NSLog(@"MOve");
     
-    if (isScrollBegin) {
+    if (isScrollBegin == YES) {
         NSArray *touchesArray = [touches allObjects];
         UITouch *touch = (UITouch *)[touchesArray objectAtIndex:0];
         CGPoint point = [touch locationInView:self];
         
+        //Cancel the touch if scroll in the big circle
+       /* if (![self isPointOnCircleList:point]) {
+            isScrollBegin = NO;
+            return ;
+        }*/
+        //NSLog(@"A");
+        BOOL direction = [self isClockWiseFrom:currentPoint to:point];
+        
         for (CircleObject * aCircle in myCircleList) {
-            //check which area we are doing
+            [aCircle spin:direction];
         }
+        
+        currentPoint = point;
+        //NSLog(@"Ddd draw");
         //[self drawRect:self.frame];
-    }
+        [self setNeedsDisplay];
+   }
 }
 
 
 - (void) touchesEnded:(NSSet *)touches withEvent:(UIEvent *)event{
     
-    if (isScrollBegin) {
+    if (isScrollBegin == YES) {
         NSArray *touchesArray = [touches allObjects];
         UITouch *touch = (UITouch *)[touchesArray objectAtIndex:0];
         CGPoint point = [touch locationInView:self];
@@ -101,7 +167,7 @@
         //If so, need animation
         
         //[self drawRect:self.frame];
-        isScrollBegin = false;
+        //isScrollBegin = NO;
     }
     //Check last point see if need to bounce
     
@@ -111,7 +177,8 @@
 
 
 - (void) touchesCancelled:(NSSet *)touches withEvent:(UIEvent *)event{
-    //Do nothing
+    //NSLog(@"Cancel");
+    isScrollBegin = NO;
 }
 
 // Only override drawRect: if you perform custom drawing.
@@ -121,14 +188,15 @@
 
 - (void)drawRect:(CGRect)rect{
     self.backgroundColor = [UIColor clearColor];
+    
+    //UIGraphicsPopContext();
+    
     CGContextRef context = UIGraphicsGetCurrentContext();
     
-    CGContextAddEllipseInRect(context, centerCircle);
+    CGContextAddEllipseInRect(context, innerCircle);
     CGContextSetFillColor(context, CGColorGetComponents([[UIColor blueColor] CGColor]));
     CGContextFillPath(context);
-    
-    //NSLog(@"%f %f",CGRectGetMidX(centerCircle),CGRectGetMidY(centerCircle));
-   
+          
     for (CircleObject * aCircle in myCircleList) {
        // NSLog(@"%f %f",[aCircle getRect].origin.x,[aCircle getRect].origin.y);
         CGContextAddEllipseInRect(context,[aCircle getRect]);
@@ -136,7 +204,10 @@
         CGContextFillPath(context);
         
     }
+    UIGraphicsPushContext(context);
+    
 }
+
 
 
 @end

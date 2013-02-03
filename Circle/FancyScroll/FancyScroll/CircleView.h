@@ -12,7 +12,8 @@
     NSMutableArray * myCircleList;
     BOOL isScrollBegin;
     CGPoint currentPoint;
-    CGRect centerCircle;
+    CGRect innerCircle;
+    CGRect outterCircle;
 }
 
 @end
