@@ -12,9 +12,10 @@
 @implementation TestViewController
 
 - (id)init{
+    
     self = [super init];
     if(self){
-        myCircle = [[CircleView alloc]initWithFrame:CGRectMake(100, 100, 200 , 200)];
+        myCircle = [[CircleView alloc]initWithFrame:CGRectMake(0, 0, 320 , 500)];
     }
     return self;
 }
@@ -23,7 +24,7 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-    //elf.view.backgroundColor = [UIColor whiteColor];
+    self.view.backgroundColor = [UIColor whiteColor];
     [self.view addSubview:myCircle];
 	// Do any additional setup after loading the view.
 }

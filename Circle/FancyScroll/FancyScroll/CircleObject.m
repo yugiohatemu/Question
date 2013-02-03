@@ -12,19 +12,33 @@
 
 - (id) initWithCenterRect:(CGRect)frame andOrder:(int)order{
     if (self = [super init]) {
-        parentCenter = CGPointMake(frame.size.width/2, frame.size.width/2);
-        parentRadius = frame.size.width/2;
-        
-        
-        
-        //Need to make parent view smaller to keep 
-        
-        //Calculate the center
+        parentCenter = CGPointMake(CGRectGetMidX(frame), CGRectGetMidY(frame));
+        parentRadius = CGRectGetWidth(frame)/2.0;
+        childRadius = parentRadius * 0.3;
+        dis = parentRadius+childRadius+5;
+        //5 is offset between small circle and big circle
+        CGFloat angle = ((40*order+ 90)*M_PI)/180;
+        childCenter = CGPointMake(parentCenter.x+dis*cos(angle),parentCenter.y+dis*sin(angle));
+        childRect = CGRectMake(childCenter.x-childRadius, childCenter.y-childRadius, childRadius*2.0, childRadius*2);
     }
+    return self;
 }
 
 - (CGRect) getRect{
-    return CGRectMake(0, 0, childRadius, childRadius);
+    return childRect;
+}
+
+
+- (CGFloat)getDis{
+    return dis;
+}
+
+- (CGFloat) getRadius{
+    return childRadius;
+}
+
+- (BOOL) isPointOnCircle:(CGPoint)point{
+    return CGRectContainsPoint(childRect, point);
 }
 
 - (void) scrollClockWise{

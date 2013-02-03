@@ -13,7 +13,12 @@
     CGFloat parentRadius;
     CGPoint childCenter;
     CGFloat childRadius;
+    CGRect childRect;
+    CGFloat dis;
 }
-- (CGRect) getRect;
 - (id) initWithCenterRect:(CGRect) frame andOrder:(int)order;
+- (CGRect) getRect;
+- (CGFloat) getDis;
+- (CGFloat) getRadius;
+- (BOOL) isPointOnCircle:(CGPoint) point;
 @end
