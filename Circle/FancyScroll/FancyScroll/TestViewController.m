@@ -24,7 +24,6 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-    self.view.backgroundColor = [UIColor whiteColor];
     [self.view addSubview:myCircle];
 	// Do any additional setup after loading the view.
 }

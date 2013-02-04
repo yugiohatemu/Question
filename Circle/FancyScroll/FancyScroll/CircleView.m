@@ -8,6 +8,9 @@
 
 #import "CircleView.h"
 #import "CircleObject.h"
+
+BOOL dirtyDir;
+
 @implementation CircleView
 
 
@@ -35,16 +38,18 @@
         //Scroll
         isScrollBegin = NO;
         currentPoint = CGPointMake(0, 0);
+       
+        timer = nil;
     }
     return self;
 }
 
 #pragma mark - Algebra
-//Be careful about radius, it is half of the width or height
+//Warning:Be careful about radius, it is half of the width or height
 
+//Want the circle to scoll when touch the outer ring
+//but do not want it to scroll when touch the inner big circle
 - (BOOL) isPointOnCircleList:(CGPoint) point{
-    //Want the circle to scoll when touch the outer part
-    //but do not want it to scroll when touch the inner big circle
 
     CGPoint center = CGPointMake(CGRectGetMidX(innerCircle), CGRectGetMidY(innerCircle));
     CGFloat dis  = sqrtf((point.x - center.x)*(point.x - center.x)+ (point.y - center.y)*(point.y - center.y));
@@ -55,11 +60,10 @@
     return  (onOuter && !onInner);
 }
 
-
+//Divide the outterCircle area by 4 part
+//1 0
+//2 3
 - (int) pointInArea:(CGPoint) point{
-    //1 0
-    //2 3
-    //TODO: replace center circle with outer circle
     
     CGFloat radius = CGRectGetHeight(outterCircle)/2.0;
     
@@ -73,25 +77,26 @@
             return i;
         }
     }
-    //-1 is invalid?
+    //-1 for invalid
     return -1;
 }
 
-
+//Check the sprint condition based on area the point difference
 - (BOOL) isClockWiseFrom:(CGPoint) from to:(CGPoint) to{
+    
     int fromArea = [self pointInArea:from];
     int toArea = [self pointInArea:to];
     BOOL result = YES;
     if (fromArea == toArea) {
         
         if (fromArea == 0) {
-            result = (from.x < to.x) || (from.y > to.y) ;
+            result = (from.x < to.x) || (from.y < to.y) ;
         }else if(fromArea == 1){
             result = (from.x < to.x) || (from.y > to.y) ;
         }else if(fromArea == 2){
-            result = (from.x > to.x) || (from.y < to.y) ;
+            result = (from.x > to.x) || (from.y > to.y) ;
         }else{ //3
-            result = (from.x < to.x) || (from.y < to.y) ;
+            result = (from.x > to.x) || (from.y < to.y) ;
         }
         
     }else{
@@ -100,10 +105,9 @@
         }else if(fromArea == 3 && toArea == 0){
             result = NO;
         }else{
-            result = (fromArea > toArea);
+            result = (fromArea < toArea);
         }
     }
-    
     
     return result;
 }
@@ -117,14 +121,12 @@
     UITouch *touch = (UITouch *)[touchesArray objectAtIndex:0];
     CGPoint point = [touch locationInView:self];
     
-    //Check if the point is inside the circle view frame else ignore
+    //Check if the point is inside the ring area 
     if ([self isPointOnCircleList:point]) {
         isScrollBegin = YES;
         currentPoint = point;
-        //NSLog(@"Hit");
     }
 
-    //[self drawRect:self.frame];
 }
 
 - (void) touchesMoved:(NSSet *)touches withEvent:(UIEvent *)event{
@@ -136,11 +138,11 @@
         CGPoint point = [touch locationInView:self];
         
         //Cancel the touch if scroll in the big circle
-       /* if (![self isPointOnCircleList:point]) {
+       /*if (![self isPointOnCircleList:point]) {
             isScrollBegin = NO;
             return ;
         }*/
-        //NSLog(@"A");
+       
         BOOL direction = [self isClockWiseFrom:currentPoint to:point];
         
         for (CircleObject * aCircle in myCircleList) {
@@ -148,31 +150,38 @@
         }
         
         currentPoint = point;
-        //NSLog(@"Ddd draw");
-        //[self drawRect:self.frame];
         [self setNeedsDisplay];
    }
 }
 
-
 - (void) touchesEnded:(NSSet *)touches withEvent:(UIEvent *)event{
+    static CGFloat delta = 10.0f;
     
-    if (isScrollBegin == YES) {
-        NSArray *touchesArray = [touches allObjects];
-        UITouch *touch = (UITouch *)[touchesArray objectAtIndex:0];
-        CGPoint point = [touch locationInView:self];
+    if (isScrollBegin == YES) {    
+    
+        CGFloat startX = CGRectGetMaxX([[myCircleList objectAtIndex:0] getRect]);
+        CGFloat endX = CGRectGetMaxX([[myCircleList lastObject] getRect]);
+       
+        //First check if first circle or last circle are shown in the scren
+        if (startX<320 || endX<320) {
+            //Then check if they exceeds the delta offset
+            if (startX<320 - delta ) {
+                
+                dirtyDir = NO;
+                timer = [NSTimer timerWithTimeInterval:1.0f/60 target:self selector:@selector(bounceTimer:) userInfo:nil repeats:YES];
+                [[NSRunLoop currentRunLoop]addTimer:timer forMode:NSDefaultRunLoopMode];
+            
+            }else if(endX<320 - delta){
+                
+                dirtyDir = YES;
+                timer = [NSTimer timerWithTimeInterval:1.0f/60 target:self selector:@selector(bounceTimer:) userInfo:nil repeats:YES];
+                [[NSRunLoop currentRunLoop]addTimer:timer forMode:NSDefaultRunLoopMode];
+            }
         
-        //Check if the point passed the limit point then need to bounce
-        
-        //If so, need animation
-        
-        //[self drawRect:self.frame];
-        //isScrollBegin = NO;
+        }
+        isScrollBegin = NO;
+                
     }
-    //Check last point see if need to bounce
-    
-    
-    //redraw with blcok animation maybe
 }
 
 
@@ -188,7 +197,8 @@
 
 - (void)drawRect:(CGRect)rect{
     self.backgroundColor = [UIColor clearColor];
-    
+
+    //If possible, I think shold pop graphic context when redraw, but clear is good for now
     //UIGraphicsPopContext();
     
     CGContextRef context = UIGraphicsGetCurrentContext();
@@ -198,7 +208,7 @@
     CGContextFillPath(context);
           
     for (CircleObject * aCircle in myCircleList) {
-       // NSLog(@"%f %f",[aCircle getRect].origin.x,[aCircle getRect].origin.y);
+      
         CGContextAddEllipseInRect(context,[aCircle getRect]);
         CGContextSetFillColor(context, CGColorGetComponents([[UIColor greenColor] CGColor]));
         CGContextFillPath(context);
@@ -208,6 +218,27 @@
     
 }
 
+//Use a dirty BOOL value for direction
+- (void) bounceTimer:(NSTimer *) myTimer{
+    //Check if the first or last circle hits the bound of screen
+    if(dirtyDir == NO && CGRectGetMaxX([[myCircleList objectAtIndex:0] getRect]) >= 310){ //width - delta
+            [timer invalidate];
+            timer = nil;
+            return ;
 
+    }else if(dirtyDir == YES &&CGRectGetMaxX([[myCircleList lastObject] getRect]) >= 310){
+            [timer invalidate];
+            timer = nil;
+            return ;
+
+        
+    }
+    
+    for (CircleObject * aCircle in myCircleList) {
+        [aCircle spin:dirtyDir];
+    }
+    
+    [self setNeedsDisplay];
+}
 
 @end

@@ -14,6 +14,7 @@
     CGPoint currentPoint;
     CGRect innerCircle;
     CGRect outterCircle;
+    NSTimer * timer;
 }
 
 @end

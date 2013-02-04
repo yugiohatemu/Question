@@ -13,7 +13,6 @@
     CGFloat parentRadius;
     CGPoint childCenter;
     CGFloat childRadius;
-    //CGRect childRect;
     CGFloat dis;
     CGFloat childAngle;
 }
@@ -22,6 +21,6 @@
 - (CGRect) getRect;
 - (CGFloat) getDis;
 - (CGFloat) getRadius;
-
+- (CGPoint) getChildCenter;
 - (void) spin:(BOOL) clockWise;
 @end
