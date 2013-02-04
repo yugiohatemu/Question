@@ -1,0 +1,279 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 46;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		0602B7D4143FBA1400757421 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0602B7D3143FBA1400757421 /* UIKit.framework */; };
+		0602B7D6143FBA1400757421 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0602B7D5143FBA1400757421 /* Foundation.framework */; };
+		0602B7D8143FBA1400757421 /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0602B7D7143FBA1400757421 /* CoreGraphics.framework */; };
+		0602B7DE143FBA1400757421 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 0602B7DC143FBA1400757421 /* InfoPlist.strings */; };
+		0602B7E0143FBA1400757421 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 0602B7DF143FBA1400757421 /* main.m */; };
+		0602B7E4143FBA1400757421 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 0602B7E3143FBA1400757421 /* AppDelegate.m */; };
+		06968C661444D4F2008332DB /* MainViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 06968C651444D4F2008332DB /* MainViewController.m */; };
+		06968C6A1444D5D4008332DB /* ImageSearchController.m in Sources */ = {isa = PBXBuildFile; fileRef = 06968C691444D5D4008332DB /* ImageSearchController.m */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXFileReference section */
+		0602B7CF143FBA1400757421 /* InklingChallenge.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = InklingChallenge.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		0602B7D3143FBA1400757421 /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = System/Library/Frameworks/UIKit.framework; sourceTree = SDKROOT; };
+		0602B7D5143FBA1400757421 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
+		0602B7D7143FBA1400757421 /* CoreGraphics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreGraphics.framework; path = System/Library/Frameworks/CoreGraphics.framework; sourceTree = SDKROOT; };
+		0602B7DB143FBA1400757421 /* InklingChallenge-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "InklingChallenge-Info.plist"; sourceTree = "<group>"; };
+		0602B7DD143FBA1400757421 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
+		0602B7DF143FBA1400757421 /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
+		0602B7E1143FBA1400757421 /* InklingChallenge-Prefix.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "InklingChallenge-Prefix.pch"; sourceTree = "<group>"; };
+		0602B7E2143FBA1400757421 /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
+		0602B7E3143FBA1400757421 /* AppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AppDelegate.m; sourceTree = "<group>"; };
+		06968C641444D4F2008332DB /* MainViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MainViewController.h; sourceTree = "<group>"; };
+		06968C651444D4F2008332DB /* MainViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MainViewController.m; sourceTree = "<group>"; };
+		06968C681444D5D4008332DB /* ImageSearchController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ImageSearchController.h; sourceTree = "<group>"; };
+		06968C691444D5D4008332DB /* ImageSearchController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ImageSearchController.m; sourceTree = "<group>"; };
+		160264AF146DD3090049C230 /* README.txt */ = {isa = PBXFileReference; lastKnownFileType = text; path = README.txt; sourceTree = "<group>"; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		0602B7CC143FBA1400757421 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				0602B7D4143FBA1400757421 /* UIKit.framework in Frameworks */,
+				0602B7D6143FBA1400757421 /* Foundation.framework in Frameworks */,
+				0602B7D8143FBA1400757421 /* CoreGraphics.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		0602B7C4143FBA1400757421 = {
+			isa = PBXGroup;
+			children = (
+				160264AF146DD3090049C230 /* README.txt */,
+				0602B7D9143FBA1400757421 /* InklingChallenge */,
+				0602B7D2143FBA1400757421 /* Frameworks */,
+				0602B7D0143FBA1400757421 /* Products */,
+			);
+			sourceTree = "<group>";
+		};
+		0602B7D0143FBA1400757421 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				0602B7CF143FBA1400757421 /* InklingChallenge.app */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		0602B7D2143FBA1400757421 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				0602B7D3143FBA1400757421 /* UIKit.framework */,
+				0602B7D5143FBA1400757421 /* Foundation.framework */,
+				0602B7D7143FBA1400757421 /* CoreGraphics.framework */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		0602B7D9143FBA1400757421 /* InklingChallenge */ = {
+			isa = PBXGroup;
+			children = (
+				06968C641444D4F2008332DB /* MainViewController.h */,
+				06968C651444D4F2008332DB /* MainViewController.m */,
+				06968C681444D5D4008332DB /* ImageSearchController.h */,
+				06968C691444D5D4008332DB /* ImageSearchController.m */,
+				0602B7E2143FBA1400757421 /* AppDelegate.h */,
+				0602B7E3143FBA1400757421 /* AppDelegate.m */,
+				0602B7DA143FBA1400757421 /* Supporting Files */,
+			);
+			path = InklingChallenge;
+			sourceTree = "<group>";
+		};
+		0602B7DA143FBA1400757421 /* Supporting Files */ = {
+			isa = PBXGroup;
+			children = (
+				0602B7DB143FBA1400757421 /* InklingChallenge-Info.plist */,
+				0602B7DC143FBA1400757421 /* InfoPlist.strings */,
+				0602B7DF143FBA1400757421 /* main.m */,
+				0602B7E1143FBA1400757421 /* InklingChallenge-Prefix.pch */,
+			);
+			name = "Supporting Files";
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		0602B7CE143FBA1400757421 /* InklingChallenge */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 0602B7E7143FBA1400757421 /* Build configuration list for PBXNativeTarget "InklingChallenge" */;
+			buildPhases = (
+				0602B7CB143FBA1400757421 /* Sources */,
+				0602B7CC143FBA1400757421 /* Frameworks */,
+				0602B7CD143FBA1400757421 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = InklingChallenge;
+			productName = InklingChallenge;
+			productReference = 0602B7CF143FBA1400757421 /* InklingChallenge.app */;
+			productType = "com.apple.product-type.application";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		0602B7C6143FBA1400757421 /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				LastUpgradeCheck = 0420;
+				ORGANIZATIONNAME = Inkling;
+			};
+			buildConfigurationList = 0602B7C9143FBA1400757421 /* Build configuration list for PBXProject "InklingChallenge" */;
+			compatibilityVersion = "Xcode 3.2";
+			developmentRegion = English;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				en,
+			);
+			mainGroup = 0602B7C4143FBA1400757421;
+			productRefGroup = 0602B7D0143FBA1400757421 /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				0602B7CE143FBA1400757421 /* InklingChallenge */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+		0602B7CD143FBA1400757421 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				0602B7DE143FBA1400757421 /* InfoPlist.strings in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		0602B7CB143FBA1400757421 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				0602B7E0143FBA1400757421 /* main.m in Sources */,
+				0602B7E4143FBA1400757421 /* AppDelegate.m in Sources */,
+				06968C661444D4F2008332DB /* MainViewController.m in Sources */,
+				06968C6A1444D5D4008332DB /* ImageSearchController.m in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin PBXVariantGroup section */
+		0602B7DC143FBA1400757421 /* InfoPlist.strings */ = {
+			isa = PBXVariantGroup;
+			children = (
+				0602B7DD143FBA1400757421 /* en */,
+			);
+			name = InfoPlist.strings;
+			sourceTree = "<group>";
+		};
+/* End PBXVariantGroup section */
+
+/* Begin XCBuildConfiguration section */
+		0602B7E5143FBA1400757421 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				ARCHS = "$(ARCHS_STANDARD_32_BIT)";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				COPY_PHASE_STRIP = NO;
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
+				GCC_VERSION = com.apple.compilers.llvm.clang.1_0;
+				GCC_WARN_ABOUT_MISSING_PROTOTYPES = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 5.0;
+				SDKROOT = iphoneos;
+				TARGETED_DEVICE_FAMILY = 2;
+			};
+			name = Debug;
+		};
+		0602B7E6143FBA1400757421 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				ARCHS = "$(ARCHS_STANDARD_32_BIT)";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				COPY_PHASE_STRIP = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_VERSION = com.apple.compilers.llvm.clang.1_0;
+				GCC_WARN_ABOUT_MISSING_PROTOTYPES = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 5.0;
+				OTHER_CFLAGS = "-DNS_BLOCK_ASSERTIONS=1";
+				SDKROOT = iphoneos;
+				TARGETED_DEVICE_FAMILY = 2;
+				VALIDATE_PRODUCT = YES;
+			};
+			name = Release;
+		};
+		0602B7E8143FBA1400757421 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = "InklingChallenge/InklingChallenge-Prefix.pch";
+				INFOPLIST_FILE = "InklingChallenge/InklingChallenge-Info.plist";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				WRAPPER_EXTENSION = app;
+			};
+			name = Debug;
+		};
+		0602B7E9143FBA1400757421 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = "InklingChallenge/InklingChallenge-Prefix.pch";
+				INFOPLIST_FILE = "InklingChallenge/InklingChallenge-Info.plist";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				WRAPPER_EXTENSION = app;
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		0602B7C9143FBA1400757421 /* Build configuration list for PBXProject "InklingChallenge" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				0602B7E5143FBA1400757421 /* Debug */,
+				0602B7E6143FBA1400757421 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		0602B7E7143FBA1400757421 /* Build configuration list for PBXNativeTarget "InklingChallenge" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				0602B7E8143FBA1400757421 /* Debug */,
+				0602B7E9143FBA1400757421 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = 0602B7C6143FBA1400757421 /* Project object */;
+}
