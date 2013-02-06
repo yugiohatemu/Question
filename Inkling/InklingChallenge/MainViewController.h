@@ -9,5 +9,7 @@
 
 #import "ImageSearchController.h"
 
-@interface MainViewController : UIViewController <UISearchBarDelegate, ImageSearchControllerDelegate>
+@interface MainViewController : UIViewController <UISearchBarDelegate, UIScrollViewDelegate,ImageSearchControllerDelegate>{
+    NSMutableArray * imageArray;
+}
 @end

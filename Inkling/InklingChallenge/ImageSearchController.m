@@ -34,6 +34,7 @@
 - (void)connection:(NSURLConnection *)connection didReceiveResponse:(NSURLResponse *)response
 {
     self.searchResultsData = [[[NSMutableData alloc] initWithCapacity:1024] autorelease];
+    
 }
 
 - (void)connection:(NSURLConnection *)connection didFailWithError:(NSError *)error
