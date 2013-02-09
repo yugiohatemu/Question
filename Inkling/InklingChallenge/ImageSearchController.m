@@ -22,6 +22,13 @@
     [NSURLConnection connectionWithRequest:request delegate:self];
 }
 
+#pragma mark - Perform search with start
+
+- (void)performNextSearch:(NSString *)searchTerm withStart:(int)start{
+    NSURLRequest *request = [NSURLRequest requestWithURL:[NSURL URLWithString:[NSString stringWithFormat:@"https://ajax.googleapis.com/ajax/services/search/images?v=1.0&q=%@&resultFormat=text&start=%d", searchTerm,start]]];
+    [NSURLConnection connectionWithRequest:request delegate:self];
+}
+
 - (void)dealloc
 {
     [_searchResultsData release];

@@ -13,5 +13,6 @@
 
 @interface ImageSearchController : NSObject <NSURLConnectionDataDelegate>
 - (void)performSearch:(NSString *)searchTerm;
+- (void)performNextSearch:(NSString *)searchTerm withStart:(int)start;
 @property (nonatomic, assign) id <ImageSearchControllerDelegate> delegate; // NOTE: Intentional weak reference
 @end

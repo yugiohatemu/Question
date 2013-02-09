@@ -11,5 +11,8 @@
 
 @interface MainViewController : UIViewController <UISearchBarDelegate, UIScrollViewDelegate,ImageSearchControllerDelegate>{
     NSMutableArray * imageArray;
+    BOOL isShowingLandscapeView;
+    UIButton * searchButton;
+    
 }
 @end
