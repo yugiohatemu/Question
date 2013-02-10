@@ -6,6 +6,8 @@
 //
 
 #import "MainViewController.h"
+const CGFloat IMAGE_HEIGHT = 155.0f;
+const CGFloat IMAGE_DELTA = 15.0f;
 
 @interface MainViewController ()
 @property (nonatomic, retain) UISearchBar *searchBar;
@@ -42,15 +44,14 @@
 
 - (void)loadView{
     [super loadView];
-    self.view.backgroundColor = [UIColor blackColor];
     
+    self.view.backgroundColor = [UIColor blackColor];
+        
     //Searchbar related
     self.searchBar = [[[UISearchBar alloc] initWithFrame:CGRectMake(0.0f, 0.0f, self.view.bounds.size.width, 60.0f)] autorelease];
     self.searchBar.delegate = self;
     [self.view addSubview:self.searchBar];
     
-    //ScrollView related
-    //Do don't want the searchbar to scroll
     scrollView = [[UIScrollView alloc]initWithFrame:CGRectMake(0, 60, self.view.bounds.size.width, self.view.bounds.size.height-60)];
     scrollView.contentSize = scrollView.bounds.size;
     [self.view addSubview:scrollView];
@@ -78,14 +79,22 @@
 
 - (void) viewDidLoad{
     [super viewDidLoad];
-    
     //Check device rotation
     isShowingLandscapeView = UIDeviceOrientationIsLandscape([UIDevice currentDevice].orientation);
+
     
     //Set up notification
     [[UIDevice currentDevice] beginGeneratingDeviceOrientationNotifications];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(orientationChanged:)
                                                  name:UIDeviceOrientationDidChangeNotification object:nil];
+    
+    //Scrollview
+    if (isShowingLandscapeView) {
+        scrollView.frame = CGRectMake(0, 60, self.view.bounds.size.height, self.view.bounds.size.width);
+    }else{
+        scrollView.frame = CGRectMake(0, 60, self.view.bounds.size.width, self.view.bounds.size.height);
+    }
+    
 }
 
 
@@ -94,8 +103,7 @@
 }
 
 
-- (void)orientationChanged:(NSNotification *)notification
-{
+- (void)orientationChanged:(NSNotification *)notification{
     UIDeviceOrientation deviceOrientation = [UIDevice currentDevice].orientation;
     CGSize size = [UIScreen mainScreen].bounds.size;
     
@@ -103,10 +111,12 @@
     if (UIDeviceOrientationIsLandscape(deviceOrientation) &&!isShowingLandscapeView){
         isShowingLandscapeView = YES;
         self.searchBar.frame = CGRectMake(0.0f, 0.0f, size.height, 60.0f);
+        scrollView.frame = CGRectMake(0, 60, self.view.bounds.size.height, self.view.bounds.size.width-60);
         [self loadImageView];
     }else if (UIDeviceOrientationIsPortrait(deviceOrientation) && isShowingLandscapeView){
-        self.searchBar.frame = CGRectMake(0.0f, 0.0f, size.width, 60.0f);
         isShowingLandscapeView = NO;
+        self.searchBar.frame = CGRectMake(0.0f, 0.0f, size.width, 60.0f);
+        scrollView.frame = CGRectMake(0, 60, self.view.bounds.size.width, self.view.bounds.size.height-60);
         [self loadImageView];
     }
 }
@@ -186,40 +196,53 @@
 
 //Hanlde event when finish downloading
 - (void) finishDownloadAnimation{
-    
     searchButton.hidden = NO;
     [searchSpinner stopAnimating];
-    //TODO: adjust button and content offset
-    searchButton.frame = CGRectOffset(searchButton.frame, 0, 100);
-    searchSpinner.frame = CGRectOffset(searchSpinner.frame, 0, 100);
-    [scrollView setContentSize:CGSizeMake(CGRectGetWidth(self.view.frame), CGRectGetMaxY(searchButton.frame))];
-   
 }
 
 
+//Load image, resize image and handle button position dynamically
 - (void) loadImageView{
-    CGSize size = [UIScreen mainScreen].bounds.size;
-    CGFloat delta = 10.0f; //offset between images
     //based on orientation
-    if (isShowingLandscapeView) { //horizontal, maybe 6 in a line?
-        CGFloat imageWidth = size.height/6;
-        CGFloat imageHeight = imageWidth;
-        
-        for (int i = 0; i<[imageArray count]; i++) {
-            UIImageView * aImageView = [imageArray objectAtIndex:i];
-            aImageView.frame = CGRectMake(delta+imageWidth * (i % 6), delta+imageHeight*(i / 6) , imageWidth, imageHeight);
-        }
-        
+    CGFloat bound;
+    if (isShowingLandscapeView) {
+        bound = [UIScreen mainScreen].bounds.size.height;
     }else{
-        //portatit, about 4 in a line
-        CGFloat imageWidth = size.width / 5;
-        CGFloat imageHeight = imageWidth;
-        
-        for (int i = 0; i<[imageArray count]; i++) {
-            UIImageView * aImageView = [imageArray objectAtIndex:i];
-            aImageView.frame = CGRectMake(delta+imageWidth * (i % 4), delta+imageHeight*(i / 4) , imageWidth, imageHeight);
-        }
+        bound = [UIScreen mainScreen].bounds.size.width;
     }
+    
+    //int row = 0;
+    for (int i = 0; i<[imageArray count]; i++) {
+        UIImageView * aImageView = [imageArray objectAtIndex:i];
+        CGFloat imageWidth = CGRectGetWidth(aImageView.frame);
+        
+        //Load image based on image ratio with respect to max image height,
+        //if not > than max height, then mean we have already calculated or the image does not need resizse
+        if (CGRectGetHeight( aImageView.frame) > IMAGE_HEIGHT) {
+            CGFloat ratio = CGRectGetWidth(aImageView.frame)/CGRectGetHeight(aImageView.frame);
+            imageWidth =  IMAGE_HEIGHT * ratio;
+        }
+        
+        //One image's position is based on the previous one
+        if (i == 0) {
+            aImageView.frame = CGRectMake(IMAGE_DELTA , IMAGE_DELTA , imageWidth, IMAGE_HEIGHT);
+        }else{
+            UIImageView * prevImage = [imageArray objectAtIndex:i-1];
+            //Check if exceeding the right boundary, 
+            if (IMAGE_DELTA +CGRectGetMaxX(prevImage.frame)+ imageWidth > bound) {
+                aImageView.frame = CGRectMake(IMAGE_DELTA , IMAGE_DELTA+CGRectGetMaxY(prevImage.frame), imageWidth, IMAGE_HEIGHT);
+            }else{
+                aImageView.frame = CGRectMake(IMAGE_DELTA +CGRectGetMaxX(prevImage.frame), CGRectGetMinY(prevImage.frame) , imageWidth, IMAGE_HEIGHT);
+            }
+        }
+        
+    }
+    
+    //Adjust buton and spinner position based on the lowest image
+    UIImageView * lastImage = [imageArray lastObject];
+    searchButton.center = CGPointMake(bound/2, CGRectGetMaxY(lastImage.frame)+IMAGE_DELTA *2);
+    searchSpinner.center = searchButton.center;
+    [scrollView setContentSize:CGSizeMake(bound, CGRectGetMaxY(searchButton.frame)+IMAGE_DELTA*2)];
 }
 
 
