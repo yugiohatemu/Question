@@ -37,19 +37,16 @@
 
 #pragma mark NSURLConnnection Delegate Methods
 
-// TODO: Handle errors and bad responses in a sensible way.
-- (void)connection:(NSURLConnection *)connection didReceiveResponse:(NSURLResponse *)response
-{
+- (void)connection:(NSURLConnection *)connection didReceiveResponse:(NSURLResponse *)response{
     self.searchResultsData = [[[NSMutableData alloc] initWithCapacity:1024] autorelease];
     
 }
 
-- (void)connection:(NSURLConnection *)connection didFailWithError:(NSError *)error
-{
+- (void)connection:(NSURLConnection *)connection didFailWithError:(NSError *)error{
+    [self.delegate imageSearchController:self getError:error];
 }
 
-- (void)connection:(NSURLConnection *)connection didReceiveData:(NSData *)data
-{
+- (void)connection:(NSURLConnection *)connection didReceiveData:(NSData *)data{
     [self.searchResultsData appendData:data];
 }
 
@@ -58,7 +55,8 @@
     NSError *error = nil;
     id JSONObject = [NSJSONSerialization JSONObjectWithData:self.searchResultsData options:NSJSONReadingAllowFragments error:&error];
     if (!JSONObject) {
-        NSLog(@"There was an error: %@", error);
+        [self.delegate imageSearchController:self getError:error];
+        return ;
     }
     id responseData = [JSONObject objectForKey:@"responseData"];
     if ([responseData isKindOfClass:[NSDictionary class]]) {

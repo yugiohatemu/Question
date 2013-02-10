@@ -34,6 +34,7 @@
     [_imageSearchController release];
     [imageArray release];
     [searchButton release];
+    [searchSpinner release];
     [super dealloc];
 }
 
@@ -42,15 +43,34 @@
 - (void)loadView{
     [super loadView];
     self.view.backgroundColor = [UIColor blackColor];
+    
+    //Searchbar related
     self.searchBar = [[[UISearchBar alloc] initWithFrame:CGRectMake(0.0f, 0.0f, self.view.bounds.size.width, 60.0f)] autorelease];
     self.searchBar.delegate = self;
     [self.view addSubview:self.searchBar];
     
+    //ScrollView related
+    //Do don't want the searchbar to scroll
+    scrollView = [[UIScrollView alloc]initWithFrame:CGRectMake(0, 60, self.view.bounds.size.width, self.view.bounds.size.height-60)];
+    scrollView.contentSize = scrollView.bounds.size;
+    [self.view addSubview:scrollView];
+    
+    //Everything will be add to scrollview instead
+    
+    //Searchbutton releatd
     searchButton = [UIButton buttonWithType:UIButtonTypeRoundedRect];
-    searchButton.frame = CGRectMake(10, 300, 120 , 30);
+    searchButton.frame = CGRectMake(10, 100, 120 , 40);
+    searchButton.center = CGPointMake(self.view.bounds.size.width/2, 70);
+    searchButton.hidden = YES;
     [searchButton setTitle:@"Search more" forState:UIControlStateNormal];
     [searchButton addTarget:self action:@selector(searchMore:) forControlEvents:UIControlEventTouchUpInside];
-    [self.view addSubview:searchButton];
+    [scrollView addSubview:searchButton];
+    
+    searchSpinner = [[UIActivityIndicatorView alloc]initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleWhiteLarge];
+    searchSpinner.center = CGPointMake(self.view.bounds.size.width/2, 70);
+    searchSpinner.hidesWhenStopped = YES;
+    [scrollView addSubview:searchSpinner];
+    
     
 }
 
@@ -81,42 +101,104 @@
     
     //Adjust size
     if (UIDeviceOrientationIsLandscape(deviceOrientation) &&!isShowingLandscapeView){
-        self.searchBar.frame = CGRectMake(0.0f, 0.0f, size.height, 60.0f);
         isShowingLandscapeView = YES;
+        self.searchBar.frame = CGRectMake(0.0f, 0.0f, size.height, 60.0f);
+        [self loadImageView];
     }else if (UIDeviceOrientationIsPortrait(deviceOrientation) && isShowingLandscapeView){
         self.searchBar.frame = CGRectMake(0.0f, 0.0f, size.width, 60.0f);
         isShowingLandscapeView = NO;
+        [self loadImageView];
     }
 }
 
 #pragma mark UISearchBar Delegate Methods
 
+//TODO: add clearn current context and reset ui
 - (void)searchBarSearchButtonClicked:(UISearchBar *)searchBar{
+    
+    //clear the current image
+    if ([imageArray count] > 0) {
+        for (UIImageView * aImageView in imageArray) {
+            [aImageView removeFromSuperview];
+        }
+        [imageArray removeAllObjects];
+    }
+    
+    //reset position and animation
+    searchButton.center = CGPointMake(self.view.bounds.size.width/2, 170);
+    searchSpinner.center = CGPointMake(self.view.bounds.size.width/2, 170);
+    searchButton.hidden = YES;
+    
+    [self startSearchAnimation];
     [self.imageSearchController performSearch:searchBar.text];
-}
-
-- (IBAction)searchMore:(id)sender{
-    //NSLog(@"Button pressed");
-    [self.imageSearchController performNextSearch:self.searchBar.text withStart:[imageArray count]];
+    
     
 }
 
-
-
+- (IBAction)searchMore:(id)sender{
+    [self startSearchAnimation];
+    [self.imageSearchController performNextSearch:self.searchBar.text withStart:[imageArray count]];
+}
 
 #pragma mark ImageSearchController Delegate Methods
 
-//Load image
-//TODO: add load based on image ratio in the last
-//TODO: show a spinner on the button?
-//TODO: adjust button
-//TODO: add scroll view
-//TODO: show spinner and hide button when search, when not, show button and hide spinner
-//TODO: add button to clear context
+- (void)imageSearchController:(id)searchController gotResults:(NSArray *)results{
+    
+    //Asynchoronous downloading to avoid blocking UI
+    dispatch_async(dispatch_get_global_queue(0,0), ^{
+        for (NSDictionary * imageInfo in results) {
+            NSString * url = [imageInfo objectForKey:@"url"];
+            NSData * imageData = [[NSData alloc] initWithContentsOfURL: [NSURL URLWithString: url]];
+            
+            if (imageData) {
+                dispatch_async(dispatch_get_main_queue(), ^{
+                    UIImage * aImage = [UIImage imageWithData:imageData];
+                    
+                    UIImageView * aImageView = [[UIImageView alloc]initWithImage:aImage];
+                    [imageArray addObject:aImageView];
+                    [scrollView addSubview:aImageView];
+                    [self loadImageView];
+                    
+                });
+            }
+        }
+            
+    });
+   [self finishDownloadAnimation];
+    
+}
+
+//TODO:show a message when error downloading happens
+- (void)imageSearchController:(id)searchController getError:(NSError *)error{
+    NSLog(@"There was an error: %@", error);
+    [self finishDownloadAnimation];
+}
+
+
+#pragma mark Detail UI related implementation
+
+
+- (void) startSearchAnimation{
+    searchButton.hidden = YES;
+    [searchSpinner startAnimating];
+}
+
+
+//Hanlde event when finish downloading
+- (void) finishDownloadAnimation{
+    
+    searchButton.hidden = NO;
+    [searchSpinner stopAnimating];
+    //TODO: adjust button and content offset
+    searchButton.frame = CGRectOffset(searchButton.frame, 0, 100);
+    searchSpinner.frame = CGRectOffset(searchSpinner.frame, 0, 100);
+    [scrollView setContentSize:CGSizeMake(CGRectGetWidth(self.view.frame), CGRectGetMaxY(searchButton.frame))];
+   
+}
+
 
 - (void) loadImageView{
     CGSize size = [UIScreen mainScreen].bounds.size;
-    CGFloat searbarOffset = 60.0f;
     CGFloat delta = 10.0f; //offset between images
     //based on orientation
     if (isShowingLandscapeView) { //horizontal, maybe 6 in a line?
@@ -125,7 +207,7 @@
         
         for (int i = 0; i<[imageArray count]; i++) {
             UIImageView * aImageView = [imageArray objectAtIndex:i];
-            aImageView.frame = CGRectMake(delta+imageWidth * (i % 6), delta+searbarOffset+imageHeight*(i / 6) , imageWidth, imageHeight);
+            aImageView.frame = CGRectMake(delta+imageWidth * (i % 6), delta+imageHeight*(i / 6) , imageWidth, imageHeight);
         }
         
     }else{
@@ -135,41 +217,10 @@
         
         for (int i = 0; i<[imageArray count]; i++) {
             UIImageView * aImageView = [imageArray objectAtIndex:i];
-            aImageView.frame = CGRectMake(delta+imageWidth * (i % 4), delta+searbarOffset+imageHeight*(i / 4) , imageWidth, imageHeight);
+            aImageView.frame = CGRectMake(delta+imageWidth * (i % 4), delta+imageHeight*(i / 4) , imageWidth, imageHeight);
         }
     }
 }
 
-
-- (void)imageSearchController:(id)searchController gotResults:(NSArray *)results{
-    
-    //TODO: asynchoronous result
-   // NSLog(@"%d in result",[results count]);
-    
-    
-    for (NSDictionary * imageInfo in results) {
-        NSString * url = [imageInfo objectForKey:@"url"];
-        //Only one pair in the array
-        NSData * imageData = [[NSData alloc] initWithContentsOfURL: [NSURL URLWithString: url]];
-        UIImage * aImage = [UIImage imageWithData:imageData];
-    
-        UIImageView * aImageView = [[UIImageView alloc]initWithImage:aImage];
-        [imageArray addObject:aImageView];
-        [self.view addSubview:aImageView];
-        
-    }
-    
-    //As soon as we have an image, show it
-    [self loadImageView];
-    
-    //}
-    
-    //TODO: load based on size and format nicely?
-    
-    // TODO: Google only sends a few images at a time.  Add a control to allow the user to fetch more images.
-    // You will need to append the parameter "start" to the request made by the ImageSearchController.
-    // Results are zero-indexed.  Be careful not to violate the Google API TOS!  The user must initiate
-    // fetching each set of results with a "user action."  Automated requests are not allowed.
-}
 
 @end

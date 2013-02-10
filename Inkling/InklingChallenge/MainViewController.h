@@ -9,10 +9,12 @@
 
 #import "ImageSearchController.h"
 
-@interface MainViewController : UIViewController <UISearchBarDelegate, UIScrollViewDelegate,ImageSearchControllerDelegate>{
+@interface MainViewController : UIViewController <UISearchBarDelegate,ImageSearchControllerDelegate>{
     NSMutableArray * imageArray;
     BOOL isShowingLandscapeView;
     UIButton * searchButton;
+    UIScrollView * scrollView;
+    UIActivityIndicatorView * searchSpinner;
     
 }
 @end

@@ -7,8 +7,10 @@
 
 #import <Foundation/Foundation.h>
 
+//Add a method for getting failure notification and handling failure
 @protocol ImageSearchControllerDelegate
 - (void)imageSearchController:(id)searchController gotResults:(NSArray *)results;
+- (void)imageSearchController:(id)searchController getError:(NSError *)error;
 @end
 
 @interface ImageSearchController : NSObject <NSURLConnectionDataDelegate>
