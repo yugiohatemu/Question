@@ -88,11 +88,14 @@ const CGFloat IMAGE_DELTA = 15.0f;
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(orientationChanged:)
                                                  name:UIDeviceOrientationDidChangeNotification object:nil];
     
+    CGSize size = [UIScreen mainScreen].bounds.size;
     //Scrollview
     if (isShowingLandscapeView) {
-        scrollView.frame = CGRectMake(0, 60, self.view.bounds.size.height, self.view.bounds.size.width);
+        scrollView.frame = CGRectMake(0, 60, size.height, size.width);
+        scrollView.contentSize = CGSizeMake(size.height, size.width);
     }else{
-        scrollView.frame = CGRectMake(0, 60, self.view.bounds.size.width, self.view.bounds.size.height);
+        scrollView.frame = CGRectMake(0, 60, size.width, size.height);
+        scrollView.contentSize = CGSizeMake(size.width, size.height);
     }
     
 }
@@ -111,12 +114,12 @@ const CGFloat IMAGE_DELTA = 15.0f;
     if (UIDeviceOrientationIsLandscape(deviceOrientation) &&!isShowingLandscapeView){
         isShowingLandscapeView = YES;
         self.searchBar.frame = CGRectMake(0.0f, 0.0f, size.height, 60.0f);
-        scrollView.frame = CGRectMake(0, 60, self.view.bounds.size.height, self.view.bounds.size.width-60);
+        scrollView.frame = CGRectMake(0, 60, size.height, size.width-60);
         [self loadImageView];
     }else if (UIDeviceOrientationIsPortrait(deviceOrientation) && isShowingLandscapeView){
         isShowingLandscapeView = NO;
         self.searchBar.frame = CGRectMake(0.0f, 0.0f, size.width, 60.0f);
-        scrollView.frame = CGRectMake(0, 60, self.view.bounds.size.width, self.view.bounds.size.height-60);
+        scrollView.frame = CGRectMake(0, 60, size.width, size.height-60);
         [self loadImageView];
     }
 }
@@ -180,7 +183,9 @@ const CGFloat IMAGE_DELTA = 15.0f;
 
 //TODO:show a message when error downloading happens
 - (void)imageSearchController:(id)searchController getError:(NSError *)error{
-    NSLog(@"There was an error: %@", error);
+    //NSLog(@"There was an error: %@", error);
+    UIAlertView * alert = [[[UIAlertView alloc]initWithTitle:@"Error" message:[error description] delegate:self cancelButtonTitle:@"Cancel" otherButtonTitles: nil]autorelease];
+    [alert show];
     [self finishDownloadAnimation];
 }
 
@@ -242,7 +247,8 @@ const CGFloat IMAGE_DELTA = 15.0f;
     UIImageView * lastImage = [imageArray lastObject];
     searchButton.center = CGPointMake(bound/2, CGRectGetMaxY(lastImage.frame)+IMAGE_DELTA *2);
     searchSpinner.center = searchButton.center;
-    [scrollView setContentSize:CGSizeMake(bound, CGRectGetMaxY(searchButton.frame)+IMAGE_DELTA*2)];
+    scrollView.contentSize = CGSizeMake(bound, CGRectGetMaxY(searchButton.frame)+IMAGE_DELTA*2);
+
 }
 
 
